@@ -167,7 +167,7 @@ namespace dProject.Controllers
 
             var data = await apiLib.SearchTitleAsync(searchText);
 
-            if (data != null && data.Results != null)
+            if (data != null && data.Results != null && data.Results.Count != null)
             {
                 string id = data.Results.FirstOrDefault().Id;
                 trailer = await apiLib.TrailerAsync(id);
