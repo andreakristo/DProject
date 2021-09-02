@@ -42,94 +42,6 @@ namespace dProject.Controllers
             _secretConfigData = secretConfigData;
         }
 
-        [HttpGet("TrailersFromYouTube")]
-        public async Task<TrailerResult[]> GetTrailersFromYouTube(string searchText)
-        {
-            if (searchText == null || searchText == "")
-            {
-                throw new Exception($"You must provide search text.");
-            }
-
-            using (var youtubeService = new YouTubeService(new BaseClientService.Initializer()
-            {
-                ApiKey = _secretConfigData["Secrets:YouTubeAPIKey"],
-            }))
-            {
-                var searchRequest = youtubeService.Search.List("snippet");
-                searchRequest.MaxResults = 10;
-
-                searchRequest.Q = searchText + "Trailer";
-
-                var searchResponse = await searchRequest.ExecuteAsync();
-
-                List<TrailerResult> lista = new List<TrailerResult>();
-
-                foreach (var searchResult in searchResponse.Items)
-                {
-                    string url = _configData.Value.YouTubeURL;
-                    var uriBuilder = new UriBuilder(url);
-                    var query = HttpUtility.ParseQueryString(uriBuilder.Query);
-                    query["v"] = searchResult.Id.VideoId;
-                    uriBuilder.Query = query.ToString();
-                    url = uriBuilder.ToString();
-
-                    // check if the title contains "trailer"
-                    if (searchResult.Snippet.Title.Contains("trailer", StringComparison.OrdinalIgnoreCase) && searchResult.Snippet.Title.Contains(searchText, StringComparison.OrdinalIgnoreCase))
-                    {
-                        TrailerResult trailer = new TrailerResult
-                        {
-                            Url = url,
-                            Title = searchResult.Snippet.Title
-                        };
-
-                        lista.Add(trailer);
-                    }                   
-                }
-                return lista.ToArray();
-            }
-        }
-
-        [HttpGet("TrailersFromIMDB")]
-        public async Task<TrailerResult[]> GetTrailersFromIMDB(string searchText)
-        {
-            if (searchText == null || searchText == "")
-            {
-                throw new ArgumentException($"You must provide search text.");
-            }
-
-            var apiLib = new ApiLib(_secretConfigData["Secrets:ImdbAPIKey"]);
-
-            var data = await apiLib.SearchTitleAsync(searchText);
-
-            List<string> ids = new List<string>();
-
-            // spremila sve ID-jeve u lista
-            foreach (var x in data.Results)
-            {
-                ids.Add(x.Id);
-            }
-
-            List<TrailerResult> result = new List<TrailerResult>();
-
-            foreach (var id in ids)
-            {
-                var trailer = await apiLib.TrailerAsync(id);
-
-                // provjerit postoji li url
-                if (trailer.Link != null)
-                {
-                    TrailerResult komb = new TrailerResult
-                    {
-                        Url = trailer.Link,
-                        Title = trailer.FullTitle + " trailer"
-                    };
-
-                    result.Add(komb);
-                }
-            }
-            return result.ToArray();
-        }
-
         [HttpGet("Trailers")]
         public async Task<TrailerResult[]> GetTrailers(string searchText)
         {
@@ -255,7 +167,7 @@ namespace dProject.Controllers
 
             var data = await apiLib.SearchTitleAsync(searchText);
 
-            if (data != null && data.Results.Count != 0)
+            if (data != null && data.Results != null)
             {
                 string id = data.Results.FirstOrDefault().Id;
                 trailer = await apiLib.TrailerAsync(id);
@@ -284,7 +196,7 @@ namespace dProject.Controllers
                 From = new MailAddress(_configData.Value.EmailAddressOfSender),
                 Subject = searchText + " Trailer",
                 IsBodyHtml = true,
-                Body = (trailer != null && trailer.Link != null)
+                Body = (data != null && data.Results != null && trailer != null && trailer.Link != null)
                     ?
                     "Hello,<br><br><b>TRAILER for "+ searchText + "</b><br><br> Here is your trailer " + result.Url + "<br><br>Yours sincerely<br>Andrea Kristo"
                     :
