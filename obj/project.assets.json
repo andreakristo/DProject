@@ -1213,11 +1213,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Vjezba\\deptProject\\dproject\\dProject.csproj",
+      "projectUniqueName": "C:\\Users\\akr\\Desktop\\dproject\\dProject.csproj",
       "projectName": "dProject",
-      "projectPath": "C:\\Vjezba\\deptProject\\dproject\\dProject.csproj",
+      "projectPath": "C:\\Users\\akr\\Desktop\\dproject\\dProject.csproj",
       "packagesPath": "C:\\Users\\akr\\.nuget\\packages\\",
-      "outputPath": "C:\\Vjezba\\deptProject\\dproject\\obj\\",
+      "outputPath": "C:\\Users\\akr\\Desktop\\dproject\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

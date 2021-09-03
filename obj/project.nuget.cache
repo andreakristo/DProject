@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "9WrzORNRsu7nqsmKWVuBPpC94fhDLaHcDDUa7udQU9tLKU1SpvhzstgQc4P/pe/65U0ErIX+5Cy31RTDSmcSyw==",
+  "dgSpecHash": "slR5yINAwLBzprknmj4FULeMu3Sytq97tsFDPqsc5bYdx5n0G94tPRbUIgXo8GHvq1hpWxixWOuLOqoprfPaFQ==",
   "success": true,
-  "projectFilePath": "C:\\Vjezba\\deptProject\\dproject\\dProject.csproj",
+  "projectFilePath": "C:\\Users\\akr\\Desktop\\dproject\\dProject.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\akr\\.nuget\\packages\\google.apis\\1.53.0\\google.apis.1.53.0.nupkg.sha512",
     "C:\\Users\\akr\\.nuget\\packages\\google.apis.auth\\1.53.0\\google.apis.auth.1.53.0.nupkg.sha512",
